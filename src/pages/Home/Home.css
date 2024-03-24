@@ -1,15 +1,9 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+#game-container {
+  height: 100%;
 
-#app {
-  background-color: rgb(26, 42, 71);
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100dvh;
 }
 
 @media (orientation: landscape) {
