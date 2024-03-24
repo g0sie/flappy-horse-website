@@ -1,3 +1,24 @@
 .navbar {
   height: var(--navbar-height);
 }
+
+.logo {
+  position: relative;
+  height: 100%;
+  background-color: hsl(var(--primary));
+}
+
+.logo__img {
+  image-rendering: pixelated;
+  translate: 80% 80%;
+  scale: 2;
+}
+
+.logo__text {
+  position: absolute;
+  top: 6px;
+  left: 65px;
+
+  color: hsl(var(--background));
+  font-size: 2.2rem;
+}

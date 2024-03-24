@@ -2,7 +2,7 @@
 export const SCREEN_HEIGHT = 720;
 export const SCREEN_WIDTH = isLandscape()
   ? 1280
-  : (window.innerWidth * 720) / (window.innerHeight - 6 * 16);
+  : (window.innerWidth * 720) / (window.innerHeight - 7 * 16);
 
 // physics
 export const GRAVITY = 800;
@@ -26,5 +26,5 @@ export const FINGER_MIN_DISTANCE_FROM_TOP_OF_SCREEN = 80;
 export const MENU_FONT = "VT323";
 
 function isLandscape() {
-  return window.innerWidth > window.innerHeight - 6 * 16;
+  return window.innerWidth > window.innerHeight - 7 * 16;
 }
