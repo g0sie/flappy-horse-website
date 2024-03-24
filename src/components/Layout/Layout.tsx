@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "../../components/ui/separator";
 
 import "./Layout.css";
 
