@@ -1,0 +1,19 @@
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: var(--footer-height);
+  padding: 0.5rem;
+}
+
+.authors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.authors__author {
+  font-size: 1rem;
+}

@@ -1,13 +1,23 @@
-import PhaserGame from "./game/PhaserGame";
-import { Button } from "./components/ui/button";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import Layout from "./components/Layout/Layout";
+
+import Home from "./pages/Home/Home";
+
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+    ],
+  },
+]);
 
 function App() {
-  return (
-    <div id="app">
-      <Button>button</Button>
-      <PhaserGame />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Chivo%20Mono:700|B612%20Mono:400");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,6 +35,9 @@
     --ring: 240 10% 3.9%;
 
     --radius: 0.5rem;
+
+    --navbar-height: 3rem;
+    --footer-height: 3rem;
   }
 
   .dark {
@@ -82,17 +86,46 @@
   box-sizing: border-box;
 }
 
-#app {
-  background-color: var(--background);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100dvh;
+/* FONT */
+
+body {
+  font-family: "B612 Mono";
+  font-weight: 400;
 }
 
-@media (orientation: landscape) {
-  #game-container {
-    max-width: 1280px;
-    max-height: 720px;
-  }
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Chivo Mono";
+  font-weight: 700;
+}
+
+html {
+  font-size: 100%;
+} /* 16px */
+
+h1 {
+  font-size: 3.366rem; /* 53.92px */
+}
+
+h2 {
+  font-size: 2.525rem; /* 40.32px */
+}
+
+h3 {
+  font-size: 1.894rem; /* 30.24px */
+}
+
+h4 {
+  font-size: 1.421rem; /* 22.72px */
+}
+
+h5 {
+  font-size: 1.066rem; /* 17.12px */
+}
+
+small {
+  font-size: 0.6rem; /* 9.6px */
 }
