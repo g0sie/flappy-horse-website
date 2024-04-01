@@ -1,11 +1,15 @@
 .navbar {
   height: var(--navbar-height);
+  background-color: hsl(var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo {
   position: relative;
   height: 100%;
-  background-color: hsl(var(--primary));
+  width: 19.5rem;
 }
 
 .logo__img {

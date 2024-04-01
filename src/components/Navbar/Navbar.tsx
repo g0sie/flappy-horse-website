@@ -1,11 +1,23 @@
+import { Button } from "../ui/button";
 import Logo from "./Logo";
+
+import { signInWithGooglePopup } from "@/utils/firebase.utils";
 
 import "./Navbar.css";
 
 const Navbar = () => {
+  async function logGoogleUser() {
+    const response = await signInWithGooglePopup();
+    console.log(response);
+  }
+
   return (
     <div className="navbar">
       <Logo />
+
+      <Button onClick={logGoogleUser} variant="secondary">
+        Zaloguj się :)
+      </Button>
     </div>
   );
 };
