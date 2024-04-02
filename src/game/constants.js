@@ -1,5 +1,5 @@
 // screen
-const pageHeight = window.innerHeight - 7 * 16 - 1;
+const pageHeight = window.innerHeight - 7 * 16 - 2;
 export const SCREEN_HEIGHT = 720;
 export const SCREEN_WIDTH = isLandscape()
   ? 1280

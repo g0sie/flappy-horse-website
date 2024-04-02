@@ -15,9 +15,7 @@ const Navbar = () => {
     <div className="navbar">
       <Logo />
 
-      <Button onClick={logGoogleUser} variant="secondary">
-        Zaloguj się :)
-      </Button>
+      <Button onClick={logGoogleUser}>Zaloguj się :)</Button>
     </div>
   );
 };
