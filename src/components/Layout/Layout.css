@@ -4,7 +4,7 @@
 }
 
 .page {
-  min-height: calc(100dvh - var(--navbar-height) - var(--footer-height) - 1px);
+  min-height: calc(100dvh - var(--navbar-height) - var(--footer-height) - 2px);
   display: flex;
   flex-direction: column;
   align-items: center;
