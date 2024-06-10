@@ -58,18 +58,22 @@ class GameScene extends BaseScene {
   }
 
   createFingers() {
+    const colors = [0xe40303, 0xff8c00, 0xffed00, 0x008026, 0x24408e, 0x732982];
+
     this.fingers = this.physics.add.group();
     for (let i = 0; i < FINGERS_TO_RENDER; i++) {
       const upperFinger = this.fingers
         .create(0, 0, "finger")
         .setImmovable(true)
         .setOrigin(0.5, 0.5)
-        .setAngle(180);
+        .setAngle(180)
+        .setTint(colors[i]);
 
       const lowerFinger = this.fingers
         .create(0, 0, "finger")
         .setImmovable(true)
-        .setOrigin(0.5, 0);
+        .setOrigin(0.5, 0)
+        .setTint(colors[i]);
 
       this.placeFinger(upperFinger, lowerFinger);
     }
