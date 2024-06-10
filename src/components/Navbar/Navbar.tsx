@@ -1,5 +1,6 @@
 import { Button } from "../ui/button";
 import Logo from "./Logo";
+import { Link } from "react-router-dom";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useAppDispatch } from "@/hooks/redux-hooks";
@@ -40,7 +41,12 @@ const Navbar = () => {
       <Logo />
 
       {isSignedIn ? (
-        <Button onClick={handleSignOut}>wyloguj się</Button>
+        <div className="flex gap-3">
+          <Link to={"/leaderboard"}>
+            <Button variant="outline">leaderboard</Button>
+          </Link>
+          <Button onClick={handleSignOut}>wyloguj się</Button>
+        </div>
       ) : (
         <Button onClick={handleSignIn}>zaloguj się :)</Button>
       )}
