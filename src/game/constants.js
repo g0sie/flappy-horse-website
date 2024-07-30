@@ -17,7 +17,7 @@ export const HORSE_INITIAL_POSITION = {
 };
 
 // fingers
-export const FINGERS_TO_RENDER = 6;
+export const FINGERS_TO_RENDER = 4;
 export const FINGER_VERTICAL_GAP = 200;
 export const FINGER_HORIZONTAL_DISTANCE = 450;
 export const FIRST_FINGER_POSITION_X = Math.min(SCREEN_WIDTH, 480);
