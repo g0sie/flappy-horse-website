@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.utils";
+
+import { Separator } from "@/components/ui/separator";
 
 interface IUser {
   id: string;
@@ -10,6 +13,8 @@ interface IUser {
 
 const LeaderboardPage = () => {
   const [users, setUsers] = useState<IUser[]>([]);
+  const { isSignedIn, user: authenticatedUser } = useAuth();
+  const [userDisplayName, setUserDisplayName] = useState<string>(null);
 
   const usersCollectionRef = collection(db, "users");
 
@@ -22,6 +27,12 @@ const LeaderboardPage = () => {
           id: doc.id,
         }));
         setUsers(data);
+        const user: IUser = data.find(
+          (user) => user.id === authenticatedUser.uid
+        );
+        if (user && "displayName" in user) {
+          setUserDisplayName(user.displayName);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -29,8 +40,8 @@ const LeaderboardPage = () => {
     getUsersFromDb();
   }, []);
 
-  return (
-    <>
+  const leaderboard = (
+    <div>
       {users.map(
         (user) =>
           user.displayName && (
@@ -39,7 +50,23 @@ const LeaderboardPage = () => {
             </p>
           )
       )}
-    </>
+    </div>
+  );
+
+  return (
+    <div className="grid gap-5">
+      {isSignedIn ? (
+        <p className="text-primary">
+          twoja nazwa: {userDisplayName || "musisz sobie ustawić nazwę"}
+        </p>
+      ) : (
+        <p className="text-primary">zaloguj się żeby dołączyć do leaderboard</p>
+      )}
+
+      <Separator />
+
+      {leaderboard}
+    </div>
   );
 };
 
