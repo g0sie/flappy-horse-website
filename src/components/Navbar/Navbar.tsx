@@ -40,16 +40,17 @@ const Navbar = () => {
     <div className="navbar">
       <Logo />
 
-      {isSignedIn ? (
-        <div className="flex gap-3">
-          <Link to={"/leaderboard"}>
-            <Button variant="outline">leaderboard</Button>
-          </Link>
+      <div className="flex gap-3">
+        <Link to={"/leaderboard"}>
+          <Button variant="outline">leaderboard</Button>
+        </Link>
+
+        {isSignedIn ? (
           <Button onClick={handleSignOut}>wyloguj się</Button>
-        </div>
-      ) : (
-        <Button onClick={handleSignIn}>zaloguj się :)</Button>
-      )}
+        ) : (
+          <Button onClick={handleSignIn}>zaloguj się :)</Button>
+        )}
+      </div>
     </div>
   );
 };
