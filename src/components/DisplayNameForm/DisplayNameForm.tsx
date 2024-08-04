@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { doesDisplayNameExist } from "@/lib/doesDisplayNameExist";
+
 import {
   Form,
   FormField,
@@ -17,7 +19,17 @@ const formSchema = z.object({
   displayName: z
     .string()
     .min(3, { message: "Muszą być przynajmniej 3 znaki kochanie." })
-    .max(30, { message: "Nie może być więcej niż 30 znaków kochanie." }),
+    .max(30, { message: "Nie może być więcej niż 30 znaków kochanie." })
+    .trim()
+    .refine(
+      async (displayName) => {
+        const exist = await doesDisplayNameExist(displayName);
+        return !exist;
+      },
+      {
+        message: "Taka nazwa już istnieje :(",
+      }
+    ),
 });
 
 const DisplayNameForm = () => {
@@ -25,7 +37,7 @@ const DisplayNameForm = () => {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
   }
 
