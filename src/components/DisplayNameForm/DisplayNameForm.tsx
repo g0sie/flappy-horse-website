@@ -18,6 +18,7 @@ import { Input } from "../ui/input";
 const formSchema = z.object({
   displayName: z
     .string()
+    .nonempty("No coś musisz wpisać")
     .min(3, { message: "Muszą być przynajmniej 3 znaki kochanie." })
     .max(30, { message: "Nie może być więcej niż 30 znaków kochanie." })
     .trim()
@@ -61,7 +62,9 @@ const DisplayNameForm = () => {
               </FormControl>
               <FormDescription className="text-accent text-xs">
                 To będzie twoja nazwa w leaderboardzie. Będzie widoczna dla
-                innych. Możesz ustawić ją tylko raz. Dobrze się zastanów.
+                innych. Możesz ustawić ją tylko raz. Dobrze się zastanów. No a w
+                ogóle to ta funcja jeszcze nie działa i nie zapiszesz swojej
+                nazwy. Ale na pewno niedługo będzie działać.
               </FormDescription>
               <FormMessage className="text-sm" />
             </FormItem>
