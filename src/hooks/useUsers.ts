@@ -6,7 +6,9 @@ import { IUser } from "@/interfaces/IUser";
 
 export function useUsers() {
   const [users, setUsers] = useState<IUser[]>([]);
-  const [isFetchError, setIsFetchError] = useState(false);
+  const [fetchStatus, setFetchStatus] = useState<
+    "loading" | "success" | "error"
+  >("loading");
   const { isSignedIn, user: authenticatedUser } = useAuth();
   const [userDisplayName, setUserDisplayName] = useState<string>(null);
 
@@ -21,6 +23,9 @@ export function useUsers() {
           id: doc.id,
         }));
         setUsers(data);
+        setFetchStatus("success");
+
+        if (!isSignedIn) return;
         const user: IUser = data.find(
           (user) => user.id === authenticatedUser.uid
         );
@@ -30,7 +35,7 @@ export function useUsers() {
           setUserDisplayName(null);
         }
       } catch (error) {
-        setIsFetchError(true);
+        setFetchStatus("error");
       }
     };
     getUsersFromDb();
@@ -39,6 +44,6 @@ export function useUsers() {
   return {
     users,
     userDisplayName,
-    isFetchError,
+    fetchStatus,
   };
 }
