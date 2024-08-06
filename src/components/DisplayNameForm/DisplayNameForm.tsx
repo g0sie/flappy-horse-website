@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -38,8 +39,9 @@ const formSchema = z.object({
 });
 
 const DisplayNameForm = () => {
-  const { user } = useAuth();
   const [isError, setIsError] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,6 +51,7 @@ const DisplayNameForm = () => {
     try {
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, { displayName: data.displayName });
+      navigate(0);
     } catch (error) {
       setIsError(true);
     }
