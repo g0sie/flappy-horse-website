@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useAuth } from "@/hooks/useAuth";
 import { doesDisplayNameExist } from "@/lib/doesDisplayNameExist";
+import { db } from "@/utils/firebase.utils";
+import { doc, setDoc } from "firebase/firestore";
 
 import {
   Form,
@@ -34,12 +38,24 @@ const formSchema = z.object({
 });
 
 const DisplayNameForm = () => {
+  const { user } = useAuth();
+  const [isError, setIsError] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+    try {
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, { displayName: data.displayName });
+    } catch (error) {
+      setIsError(true);
+    }
+  }
+
+  if (isError) {
+    return <p className="text-primary">coś poszło nie tak :(</p>;
   }
 
   return (
