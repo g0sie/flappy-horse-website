@@ -40,6 +40,7 @@ const formSchema = z.object({
 
 const DisplayNameForm = () => {
   const [isError, setIsError] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -49,6 +50,7 @@ const DisplayNameForm = () => {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
+      setIsFetching(true);
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, { displayName: data.displayName });
       navigate(0);
@@ -89,8 +91,13 @@ const DisplayNameForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-3 font-bold" size="sm">
-          Zapisz
+        <Button
+          type="submit"
+          disabled={isFetching}
+          className="mt-3 font-bold"
+          size="sm"
+        >
+          {isFetching ? "czekaj..." : "Zapisz"}
         </Button>
       </form>
     </Form>
