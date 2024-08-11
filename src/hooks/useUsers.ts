@@ -14,30 +14,31 @@ export function useUsers() {
 
   const usersCollectionRef = collection(db, "users");
 
-  useEffect(() => {
-    const getUsersFromDb = async () => {
-      try {
-        const res = await getDocs(usersCollectionRef);
-        const data: IUser[] = res.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setUsers(data);
-        setFetchStatus("success");
+  const getUsersFromDb = async () => {
+    try {
+      const res = await getDocs(usersCollectionRef);
+      const data: IUser[] = res.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setUsers(data);
+      setFetchStatus("success");
 
-        if (!isSignedIn) return;
-        const user: IUser = data.find(
-          (user) => user.id === authenticatedUser.uid
-        );
-        if (user && "displayName" in user) {
-          setUserDisplayName(user.displayName);
-        } else {
-          setUserDisplayName(null);
-        }
-      } catch (error) {
-        setFetchStatus("error");
+      if (!isSignedIn) return;
+      const user: IUser = data.find(
+        (user) => user.id === authenticatedUser.uid
+      );
+      if (user && "displayName" in user) {
+        setUserDisplayName(user.displayName);
+      } else {
+        setUserDisplayName(null);
       }
-    };
+    } catch (error) {
+      setFetchStatus("error");
+    }
+  };
+
+  useEffect(() => {
     getUsersFromDb();
   }, [isSignedIn]);
 
@@ -45,5 +46,6 @@ export function useUsers() {
     users,
     userDisplayName,
     fetchStatus,
+    refreshUsers: getUsersFromDb,
   };
 }

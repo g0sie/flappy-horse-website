@@ -6,7 +6,7 @@ import DisplayNameForm from "@/components/DisplayNameForm/DisplayNameForm";
 
 const LeaderboardPage = () => {
   const { isSignedIn } = useAuth();
-  const { users, userDisplayName, fetchStatus } = useUsers();
+  const { users, userDisplayName, fetchStatus, refreshUsers } = useUsers();
 
   const leaderboard = (
     <div>
@@ -33,7 +33,7 @@ const LeaderboardPage = () => {
     <div className="grid gap-5 max-w-[90%]">
       {isSignedIn ? (
         userDisplayName == null ? (
-          <DisplayNameForm />
+          <DisplayNameForm refreshUsers={refreshUsers} />
         ) : (
           <p className="text-primary">twoja nazwa: {userDisplayName}</p>
         )
