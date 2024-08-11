@@ -1,7 +1,12 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useAuth } from "@/hooks/useAuth";
 import { doesDisplayNameExist } from "@/lib/doesDisplayNameExist";
+import { db } from "@/utils/firebase.utils";
+import { doc, setDoc } from "firebase/firestore";
 
 import {
   Form,
@@ -34,12 +39,28 @@ const formSchema = z.object({
 });
 
 const DisplayNameForm = () => {
+  const [isError, setIsError] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+    try {
+      setIsFetching(true);
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, { displayName: data.displayName });
+      navigate(0);
+    } catch (error) {
+      setIsError(true);
+    }
+  }
+
+  if (isError) {
+    return <p className="text-primary">coś poszło nie tak :(</p>;
   }
 
   return (
@@ -70,8 +91,13 @@ const DisplayNameForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-3 font-bold" size="sm">
-          Zapisz
+        <Button
+          type="submit"
+          disabled={isFetching}
+          className="mt-3 font-bold"
+          size="sm"
+        >
+          {isFetching ? "czekaj..." : "Zapisz"}
         </Button>
       </form>
     </Form>

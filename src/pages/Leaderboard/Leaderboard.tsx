@@ -6,7 +6,7 @@ import DisplayNameForm from "@/components/DisplayNameForm/DisplayNameForm";
 
 const LeaderboardPage = () => {
   const { isSignedIn } = useAuth();
-  const { users, userDisplayName } = useUsers();
+  const { users, userDisplayName, fetchStatus } = useUsers();
 
   const leaderboard = (
     <div>
@@ -20,6 +20,14 @@ const LeaderboardPage = () => {
       )}
     </div>
   );
+
+  if (fetchStatus === "loading") {
+    return <p className="text-primary">loading...</p>;
+  }
+
+  if (fetchStatus === "error") {
+    return <p className="text-primary">coś poszło nie tak :(</p>;
+  }
 
   return (
     <div className="grid gap-5 max-w-[90%]">
