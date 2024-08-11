@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,6 +19,10 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
+interface DisplayNameFormProps {
+  refreshUsers: () => Promise<void>;
+}
+
 const formSchema = z.object({
   displayName: z
     .string()
@@ -38,11 +41,10 @@ const formSchema = z.object({
     ),
 });
 
-const DisplayNameForm = () => {
+const DisplayNameForm = ({ refreshUsers }: DisplayNameFormProps) => {
   const [isError, setIsError] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,7 +55,7 @@ const DisplayNameForm = () => {
       setIsFetching(true);
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, { displayName: data.displayName });
-      navigate(0);
+      refreshUsers();
     } catch (error) {
       setIsError(true);
     }
@@ -83,9 +85,7 @@ const DisplayNameForm = () => {
               </FormControl>
               <FormDescription className="text-accent text-xs">
                 To będzie twoja nazwa w leaderboardzie. Będzie widoczna dla
-                innych. Możesz ustawić ją tylko raz. Dobrze się zastanów. No a w
-                ogóle to ta funcja jeszcze nie działa i nie zapiszesz swojej
-                nazwy. Ale na pewno niedługo będzie działać.
+                innych. Możesz ustawić ją tylko raz. Dobrze się zastanów.
               </FormDescription>
               <FormMessage className="text-sm" />
             </FormItem>
