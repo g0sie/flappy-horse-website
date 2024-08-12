@@ -54,7 +54,10 @@ const DisplayNameForm = ({ refreshUsers }: DisplayNameFormProps) => {
     try {
       setIsFetching(true);
       const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, { displayName: data.displayName });
+      await setDoc(userRef, {
+        displayName: data.displayName,
+        userId: user.uid,
+      });
       refreshUsers();
     } catch (error) {
       setIsError(true);
