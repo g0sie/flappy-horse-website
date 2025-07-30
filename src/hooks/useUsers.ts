@@ -11,6 +11,7 @@ export function useUsers() {
   >("loading");
   const { isSignedIn, user: authenticatedUser } = useAuth();
   const [userDisplayName, setUserDisplayName] = useState<string>(null);
+  const [userScore, setUserScore] = useState<number>(0);
 
   const usersCollectionRef = collection(db, "users");
 
@@ -33,6 +34,11 @@ export function useUsers() {
       } else {
         setUserDisplayName(null);
       }
+      if (user && "score" in user) {
+        setUserScore(user.score);
+      } else {
+        setUserScore(0);
+      }
     } catch (error) {
       setFetchStatus("error");
     }
@@ -45,6 +51,7 @@ export function useUsers() {
   return {
     users,
     userDisplayName,
+    userScore,
     fetchStatus,
     refreshUsers: getUsersFromDb,
   };
