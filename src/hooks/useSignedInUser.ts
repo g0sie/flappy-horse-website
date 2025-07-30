@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/utils/firebase.utils";
 import { IUser } from "@/interfaces/IUser";
 
-export function useUsers() {
-  const [users, setUsers] = useState<IUser[]>([]);
+export function useSignedInUser() {
   const [fetchStatus, setFetchStatus] = useState<
-    "loading" | "success" | "error"
+    "loading" | "success" | "error" | "not signed in"
   >("loading");
   const { isSignedIn, user: authenticatedUser } = useAuth();
   const [userDisplayName, setUserDisplayName] = useState<string>(null);
@@ -15,22 +14,22 @@ export function useUsers() {
 
   const usersCollectionRef = collection(db, "users");
 
-  const getUsersFromDb = async () => {
+  const getSignedInUserFromDb = async () => {
     try {
-      const res = await getDocs(
-        query(usersCollectionRef, orderBy("score", "desc"))
-      );
+      if (!isSignedIn) {
+        setFetchStatus("not signed in");
+        return;
+      }
+
+      const res = await getDocs(query(usersCollectionRef));
       const data: IUser[] = res.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
-      setUsers(data);
-      setFetchStatus("success");
-
-      if (!isSignedIn) return;
       const user: IUser = data.find(
         (user) => user.id === authenticatedUser.uid
       );
+
       if (user && "displayName" in user) {
         setUserDisplayName(user.displayName);
       } else {
@@ -41,20 +40,21 @@ export function useUsers() {
       } else {
         setUserScore(0);
       }
+
+      setFetchStatus("success");
     } catch (error) {
       setFetchStatus("error");
     }
   };
 
   useEffect(() => {
-    getUsersFromDb();
+    getSignedInUserFromDb();
   }, [isSignedIn]);
 
   return {
-    users,
     userDisplayName,
     userScore,
     fetchStatus,
-    refreshUsers: getUsersFromDb,
+    refreshSignedInUser: getSignedInUserFromDb,
   };
 }
