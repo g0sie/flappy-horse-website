@@ -1,53 +1,44 @@
-import { useUsers } from "@/hooks/useUsers";
-import { useAuth } from "@/hooks/useAuth";
-
 import { Separator } from "@/components/ui/separator";
-import DisplayNameForm from "@/components/DisplayNameForm/DisplayNameForm";
+import SignedInUserData from "./components/SignedInUserData/SignedInUserData";
+import LeaderBoardTable from "./components/LeaderBoardTable/LeaderBoardTable";
+
+import { useSortedUsers } from "@/hooks/useSortedUsers";
+import { useSignedInUser } from "@/hooks/useSignedInUser";
 
 const LeaderboardPage = () => {
-  const { isSignedIn } = useAuth();
-  const { users, userDisplayName, userScore, fetchStatus, refreshUsers } =
-    useUsers();
+  const {
+    users,
+    fetchStatus: usersFetchStatus,
+    refreshUsers,
+  } = useSortedUsers();
+  const {
+    userDisplayName,
+    userScore,
+    fetchStatus: userFetchStatus,
+    refreshSignedInUser,
+  } = useSignedInUser();
 
-  const leaderboard = (
-    <div>
-      {users.map(
-        (user) =>
-          user.displayName && (
-            <p key={user.id} className="text-primary">
-              {user.displayName} - {user.score || 0}
-            </p>
-          )
-      )}
-    </div>
-  );
-
-  if (fetchStatus === "loading") {
-    return <p className="text-primary">loading...</p>;
-  }
-
-  if (fetchStatus === "error") {
-    return <p className="text-primary">coś poszło nie tak :(</p>;
+  async function refreshData() {
+    refreshUsers();
+    refreshSignedInUser();
   }
 
   return (
     <div className="grid gap-5 max-w-[90%]">
-      {isSignedIn ? (
-        userDisplayName == null ? (
-          <DisplayNameForm refreshUsers={refreshUsers} />
-        ) : (
-          <>
-            <p className="text-primary">twoja nazwa: {userDisplayName}</p>
-            <p className="text-primary">twój wynik: {userScore}</p>
-          </>
-        )
-      ) : (
-        <p className="text-primary">zaloguj się żeby dołączyć do leaderboard</p>
-      )}
+      <SignedInUserData
+        userDisplayName={userDisplayName}
+        userScore={userScore}
+        fetchStatus={userFetchStatus}
+        refreshData={refreshData}
+      />
 
       <Separator />
 
-      {leaderboard}
+      <LeaderBoardTable
+        users={users}
+        fetchStatus={usersFetchStatus}
+        refreshUsers={refreshUsers}
+      />
     </div>
   );
 };

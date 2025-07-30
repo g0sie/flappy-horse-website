@@ -20,7 +20,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 interface DisplayNameFormProps {
-  refreshUsers: () => Promise<void>;
+  refreshData: () => Promise<void>;
 }
 
 const formSchema = z.object({
@@ -41,7 +41,7 @@ const formSchema = z.object({
     ),
 });
 
-const DisplayNameForm = ({ refreshUsers }: DisplayNameFormProps) => {
+const DisplayNameForm = ({ refreshData }: DisplayNameFormProps) => {
   const [isError, setIsError] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const { user } = useAuth();
@@ -55,8 +55,9 @@ const DisplayNameForm = ({ refreshUsers }: DisplayNameFormProps) => {
       setIsFetching(true);
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, { displayName: data.displayName }, { merge: true });
-      refreshUsers();
+      refreshData();
     } catch (error) {
+      console.log(error.message);
       setIsError(true);
     }
   }
@@ -68,6 +69,10 @@ const DisplayNameForm = ({ refreshUsers }: DisplayNameFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormDescription className="text-secondary mb-2">
+          Jeżeli chcesz pojawić się w leaderboardzie oraz przeglądać swój wynik
+          - musisz ustawić nazwę użytkownika.
+        </FormDescription>
         <FormField
           control={form.control}
           name="displayName"
@@ -94,7 +99,7 @@ const DisplayNameForm = ({ refreshUsers }: DisplayNameFormProps) => {
         <Button
           type="submit"
           disabled={isFetching}
-          className="mt-3 font-bold"
+          className="mt-3 font-bold bg-secondary"
           size="sm"
         >
           {isFetching ? "czekaj..." : "Zapisz"}
