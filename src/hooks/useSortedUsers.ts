@@ -13,6 +13,7 @@ export function useSortedUsers() {
 
   const getSortedUsersFromDb = async () => {
     try {
+      setFetchStatus("loading");
       const res = await getDocs(
         query(usersCollectionRef, orderBy("score", "desc"))
       );

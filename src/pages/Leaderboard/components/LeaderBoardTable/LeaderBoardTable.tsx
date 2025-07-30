@@ -1,7 +1,10 @@
 import { useSortedUsers } from "@/hooks/useSortedUsers";
 
+import RefreshIcon from "@/components/RefreshIcon/RefreshIcon";
+import { Button } from "@/components/ui/button";
+
 function LeaderBoardTable() {
-  const { users, fetchStatus } = useSortedUsers();
+  const { users, fetchStatus, refreshUsers } = useSortedUsers();
 
   if (fetchStatus === "loading") {
     return <p className="text-primary">loading...</p>;
@@ -21,6 +24,11 @@ function LeaderBoardTable() {
             </p>
           )
       )}
+      <div className="flex justify-center mt-3">
+        <Button onClick={refreshUsers} className="p-5">
+          <RefreshIcon />
+        </Button>
+      </div>
     </div>
   );
 }
