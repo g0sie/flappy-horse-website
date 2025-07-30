@@ -11,6 +11,7 @@ import {
   SCREEN_WIDTH,
   FIRST_FINGER_POSITION_X,
   FINGER_MIN_DISTANCE_FROM_TOP_OF_SCREEN,
+  IS_PRIDE_MONTH,
 } from "../constants";
 
 class GameScene extends BaseScene {
@@ -73,14 +74,18 @@ class GameScene extends BaseScene {
         .create(0, 0, "finger")
         .setImmovable(true)
         .setOrigin(0.5, 0.5)
-        .setAngle(180)
-        .setTint(this.colors[i]);
+        .setAngle(180);
 
       const lowerFinger = this.fingers
         .create(0, 0, "finger")
         .setImmovable(true)
-        .setOrigin(0.5, 0)
-        .setTint(this.colors[i]);
+        .setOrigin(0.5, 0);
+
+      if (IS_PRIDE_MONTH) {
+        [upperFinger, lowerFinger].map((finger) =>
+          finger.setTint(this.colors[i])
+        );
+      }
 
       this.placeFinger(upperFinger, lowerFinger);
     }

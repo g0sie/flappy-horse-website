@@ -17,6 +17,7 @@ export const HORSE_INITIAL_POSITION = {
 };
 
 // fingers
+export const IS_PRIDE_MONTH = new Date().getMonth() === 5;
 export const FINGERS_TO_RENDER = 6;
 export const FINGER_VERTICAL_GAP = 200;
 export const FINGER_HORIZONTAL_DISTANCE = 450;
