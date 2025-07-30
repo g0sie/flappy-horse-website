@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/utils/firebase.utils";
 import { IUser } from "@/interfaces/IUser";
 
@@ -11,12 +11,15 @@ export function useUsers() {
   >("loading");
   const { isSignedIn, user: authenticatedUser } = useAuth();
   const [userDisplayName, setUserDisplayName] = useState<string>(null);
+  const [userScore, setUserScore] = useState<number>(0);
 
   const usersCollectionRef = collection(db, "users");
 
   const getUsersFromDb = async () => {
     try {
-      const res = await getDocs(usersCollectionRef);
+      const res = await getDocs(
+        query(usersCollectionRef, orderBy("score", "desc"))
+      );
       const data: IUser[] = res.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
@@ -33,6 +36,11 @@ export function useUsers() {
       } else {
         setUserDisplayName(null);
       }
+      if (user && "score" in user) {
+        setUserScore(user.score);
+      } else {
+        setUserScore(0);
+      }
     } catch (error) {
       setFetchStatus("error");
     }
@@ -45,6 +53,7 @@ export function useUsers() {
   return {
     users,
     userDisplayName,
+    userScore,
     fetchStatus,
     refreshUsers: getUsersFromDb,
   };

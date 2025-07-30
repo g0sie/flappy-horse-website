@@ -54,10 +54,7 @@ const DisplayNameForm = ({ refreshUsers }: DisplayNameFormProps) => {
     try {
       setIsFetching(true);
       const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, {
-        displayName: data.displayName,
-        userId: user.uid,
-      });
+      await setDoc(userRef, { displayName: data.displayName }, { merge: true });
       refreshUsers();
     } catch (error) {
       setIsError(true);

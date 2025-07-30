@@ -6,7 +6,8 @@ import DisplayNameForm from "@/components/DisplayNameForm/DisplayNameForm";
 
 const LeaderboardPage = () => {
   const { isSignedIn } = useAuth();
-  const { users, userDisplayName, fetchStatus, refreshUsers } = useUsers();
+  const { users, userDisplayName, userScore, fetchStatus, refreshUsers } =
+    useUsers();
 
   const leaderboard = (
     <div>
@@ -35,7 +36,10 @@ const LeaderboardPage = () => {
         userDisplayName == null ? (
           <DisplayNameForm refreshUsers={refreshUsers} />
         ) : (
-          <p className="text-primary">twoja nazwa: {userDisplayName}</p>
+          <>
+            <p className="text-primary">twoja nazwa: {userDisplayName}</p>
+            <p className="text-primary">twój wynik: {userScore}</p>
+          </>
         )
       ) : (
         <p className="text-primary">zaloguj się żeby dołączyć do leaderboard</p>

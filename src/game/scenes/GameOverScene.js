@@ -1,4 +1,5 @@
 import BaseScene from "./BaseScene";
+import { updateUserScoreIfHigher } from "@/lib/updateUserScoreIfHigher";
 
 class GameOverScene extends BaseScene {
   constructor() {
@@ -27,8 +28,16 @@ class GameOverScene extends BaseScene {
     this.score = data.score;
   }
 
-  create() {
+  async create() {
     this.createBackground("dark");
+
+    // save score in firebase
+    try {
+      await updateUserScoreIfHigher(this.score);
+    } catch (error) {
+      console.error("Nie udało się zapisać wyniku:", error);
+    }
+
     this.createMenu(this.menu);
   }
 
