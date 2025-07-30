@@ -4,7 +4,6 @@ import { auth, db } from "@/utils/firebase.utils";
 export const updateUserScoreIfHigher = async (newScore) => {
   const user = auth.currentUser;
   if (!user) {
-    console.error("Użytkownik niezalogowany!");
     return;
   }
 
@@ -18,15 +17,11 @@ export const updateUserScoreIfHigher = async (newScore) => {
 
       if (newScore > currentScore) {
         await setDoc(userDocRef, { score: newScore }, { merge: true });
-        console.log("Nowy, lepszy wynik zapisany!");
-      } else {
-        console.log("Nowy wynik nie jest lepszy – nie zapisuję.");
       }
     } else {
       await setDoc(userDocRef, { score: newScore }, { merge: true });
-      console.log("Utworzono dokument z pierwszym wynikiem!");
     }
   } catch (error) {
-    console.error("Błąd przy zapisie punktów:", error);
+    console.error(error);
   }
 };
