@@ -24,6 +24,15 @@ class GameScene extends BaseScene {
 
     this.score = 0;
     this.scoreText = "";
+
+    this.colors = [
+      "0xE40303",
+      "0xFF8C00",
+      "0xFFED00",
+      "0x008026",
+      "0x004CFF",
+      "0x732982",
+    ];
   }
 
   init(data) {
@@ -64,12 +73,14 @@ class GameScene extends BaseScene {
         .create(0, 0, "finger")
         .setImmovable(true)
         .setOrigin(0.5, 0.5)
-        .setAngle(180);
+        .setAngle(180)
+        .setTint(this.colors[i]);
 
       const lowerFinger = this.fingers
         .create(0, 0, "finger")
         .setImmovable(true)
-        .setOrigin(0.5, 0);
+        .setOrigin(0.5, 0)
+        .setTint(this.colors[i]);
 
       this.placeFinger(upperFinger, lowerFinger);
     }
