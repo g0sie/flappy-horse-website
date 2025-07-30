@@ -1,11 +1,19 @@
-import { useSortedUsers } from "@/hooks/useSortedUsers";
-
 import RefreshIcon from "@/components/RefreshIcon/RefreshIcon";
 import { Button } from "@/components/ui/button";
 
-function LeaderBoardTable() {
-  const { users, fetchStatus, refreshUsers } = useSortedUsers();
+import { IUser } from "@/interfaces/IUser";
 
+interface LeaderBoardTableProps {
+  users: IUser[];
+  fetchStatus: "loading" | "success" | "error";
+  refreshUsers: () => Promise<void>;
+}
+
+function LeaderBoardTable({
+  users,
+  fetchStatus,
+  refreshUsers,
+}: LeaderBoardTableProps) {
   if (fetchStatus === "loading") {
     return <p className="text-primary">loading...</p>;
   }

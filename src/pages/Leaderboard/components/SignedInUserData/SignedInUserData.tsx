@@ -1,18 +1,18 @@
-import { useSortedUsers } from "@/hooks/useSortedUsers";
-import { useSignedInUser } from "@/hooks/useSignedInUser";
-
 import DisplayNameForm from "@/components/DisplayNameForm/DisplayNameForm";
 
-function SignedInUserData() {
-  const { refreshUsers } = useSortedUsers();
-  const { userDisplayName, userScore, fetchStatus, refreshSignedInUser } =
-    useSignedInUser();
+interface SignedInUserDataProps {
+  userDisplayName: string;
+  userScore: number;
+  fetchStatus: "loading" | "success" | "error" | "not signed in";
+  refreshData: () => Promise<void>;
+}
 
-  async function refreshData() {
-    refreshUsers();
-    refreshSignedInUser();
-  }
-
+function SignedInUserData({
+  userDisplayName,
+  userScore,
+  fetchStatus,
+  refreshData,
+}: SignedInUserDataProps) {
   if (fetchStatus === "not signed in") {
     return (
       <p className="text-primary">zaloguj się żeby dołączyć do leaderboard</p>
