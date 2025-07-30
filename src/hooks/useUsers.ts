@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/utils/firebase.utils";
 import { IUser } from "@/interfaces/IUser";
 
@@ -17,7 +17,9 @@ export function useUsers() {
 
   const getUsersFromDb = async () => {
     try {
-      const res = await getDocs(usersCollectionRef);
+      const res = await getDocs(
+        query(usersCollectionRef, orderBy("score", "desc"))
+      );
       const data: IUser[] = res.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
